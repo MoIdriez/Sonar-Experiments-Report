@@ -1,5 +1,5 @@
 datadir = 'D:\Git\Data\Experiments\20161114\EZ\Corner15\';
-plotdir = 'C:\Users\p0079746\Documents\Sonar Experiments Report\plots\20161114\EZ Corner 15\';
+plotdir = 'D:\Git\Sonar Experiments Report\plots\20161114\EZ Corner 15\';
 %% plot individiual - EZ Corner
 f1 = figure;
 for i = 1:10
