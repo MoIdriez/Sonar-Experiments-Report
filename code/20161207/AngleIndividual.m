@@ -1,6 +1,6 @@
 % locations of folders
 datadir = 'D:\Git\Data\Experiments\20161207\Angle\';
-plotdir = 'C:\Users\p0079746\Documents\Sonar Experiments Report\plots\20161207\Angle\Individual\';
+plotdir = 'D:\Git\Sonar Experiments Report\plots\20161207\Angle\Individual\';
 
 % sonars and sample interval
 sonars = {'EZ' 'EZ1' 'EZBrown'};
@@ -41,21 +41,98 @@ for i = 1:size(sonars, 2)
         f3 = figure('units','normalized','outerposition',[0 0 1 1]);
         subplot(1,2,1); plot(forward); legend(strread(num2str(1:12),'%s'));
         subplot(1,2,2); plot(backward); legend(strread(num2str(1:12),'%s'));
+                
+        % overlay all forward plots next to all backward plots with mean
+        forward = data(:,1:2:end);
+        forwardmean = mean(forward');
+        backward = data(:,2:2:end);
+        backwardmean = mean(backward');
         
-        % overlay all plots
+        f4 = figure('units','normalized','outerposition',[0 0 1 1]);
         
-        % overlay all plots with mean
+        
+        subplot(1,2,1);
+        hold on;
+        plot(forward, 'Color', [0 1 0 0.1]);
+        plot(forwardmean, 'Color', [0 0 0 1]);
+        
+        subplot(1,2,2);
+        hold on;
+        plot(backward, 'Color', [0 1 0 0.1]);
+        plot(backwardmean, 'Color', [0 0 0 1]);
+        
+        % overlay all plots with means
+        forward = data(:,1:2:end);
+        forwardmean = mean(forward');
+        backward = data(:,2:2:end);
+        backwardmean = mean(backward');
+        
+        f5 = figure('units','normalized','outerposition',[0 0 1 1]);
+        
+        hold on;
+        plot(forward, 'Color', [0 1 0 0.1]);
+        plot(forwardmean, 'Color', [1 0 0 1]);
+                
+        plot(fliplr(backward')', 'Color', [0 1 0 0.1]);
+        plot(fliplr(backwardmean), 'Color', [0 0 1 1]);
+        
+        legend(strread(num2str(1:12),'%s'));
+        
+        % overlay all plots with means remove offsets
+        offset = str2double(interv(j)) * 12;
+        forward = data(offset:end,1:2:end);
+        forwardmean = mean(forward');
+        backward = data(offset:end,2:2:end);
+        backwardmean = mean(backward');
+        
+        f6 = figure('units','normalized','outerposition',[0 0 1 1]);
+        
+        hold on;
+        plot(forward, 'Color', [0 1 0 0.1]);
+        plot(forwardmean, 'Color', [1 0 0 1]);
+                
+        plot(fliplr(backward')', 'Color', [0 1 0 0.1]);
+        plot(fliplr(backwardmean), 'Color', [0 0 1 1]);
+        
+        legend(strread(num2str(1:12),'%s'));       
         
         % overlay all plots with mean and standard deviation
+        forward = data(:,1:2:end);
+        forwardmean = mean(forward');
+        forwardstd = std(forward');
+        
+        backward = data(:,2:2:end);
+        backwardmean = mean(backward');
+        backwardstd = std(backward');
+        f7 = figure('units','normalized','outerposition',[0 0 1 1]);
+                
+        subplot(1,2,1);
+        hold on;
+        plot(forward, 'Color', [0 1 0 0.1]);
+        plot(forwardmean, 'Color', [0 0 0 1]);
+        plot(forwardstd, 'Color', [1 0 0 1]);
+        
+        
+        subplot(1,2,2);
+        hold on;
+        plot(backward, 'Color', [0 1 0 0.1]);
+        plot(backwardmean, 'Color', [0 0 0 1]);
+        plot(backwardstd, 'Color', [1 0 0 1]);
+        
         
         % save all these plots
-        plots = [f1 f2 f3];
+        plots = [f1 f2 f3 f4 f5 f6 f7];
         plotnames = {...
             char(strcat(sonars(i), ' - ', interv(j), ' - Raw individual results'))...
             char(strcat(sonars(i), ' - ', interv(j), ' - RunAvg individual results'))...
-            char(strcat(sonars(i), ' - ', interv(j), ' - Combine directional results'))...
+            char(strcat(sonars(i), ' - ', interv(j), ' - Combine seperate directional results'))...
+            char(strcat(sonars(i), ' - ', interv(j), ' - Combine seperate directional results with mean'))...
+            char(strcat(sonars(i), ' - ', interv(j), ' - Combine all directional results with mean'))...
+            char(strcat(sonars(i), ' - ', interv(j), ' - Combine all directional results with mean removed offsets'))...
+            char(strcat(sonars(i), ' - ', interv(j), ' - Combine seperate directional results with mean and standard deviation'))...
             };
         saveplots(plotdir, plots, plotnames);
+        
     end    
 end
 
